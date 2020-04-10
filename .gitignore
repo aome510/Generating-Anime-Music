@@ -1,0 +1,8 @@
+checklist
+models/*
+generating_anime_music/generated_song.mid
+generating_anime_music/static/model.hdf5
+*.pyc
+generating_anime_music/frontend/node_modules/
+generating_anime_music/frontend/dist/
+generating_anime_music/frontend/.cache/

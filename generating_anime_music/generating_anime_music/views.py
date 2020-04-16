@@ -12,8 +12,6 @@ def index(request):
 
 
 def generate(request):
-    messages.info(request, 'You\'ve tried to generate a song')
-
     # generate generated_song.mid
     deploy.generate_song()
 

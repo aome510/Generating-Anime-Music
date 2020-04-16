@@ -6,3 +6,4 @@ generating_anime_music/static/model.hdf5
 generating_anime_music/frontend/node_modules/
 generating_anime_music/frontend/dist/
 generating_anime_music/frontend/.cache/
+generating_anime_music/templates/

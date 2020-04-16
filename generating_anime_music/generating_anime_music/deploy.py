@@ -91,7 +91,7 @@ def generate_notes():
         result = int_to_note[index]
         prediction_output.append(result)
 
-        print(result)
+        print(i, result)
 
         pattern = np.append(pattern, index)
         pattern = pattern[1: len(pattern)]

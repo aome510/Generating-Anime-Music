@@ -1,6 +1,5 @@
 from django.shortcuts import render
-from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from wsgiref.util import FileWrapper
 import os
 
@@ -11,7 +10,7 @@ def index(request):
     return render(request, 'index.html')
 
 
-def generate(request):
+def get_generated_song(request):
     # generate generated_song.mid
     deploy.generate_song()
 
@@ -22,3 +21,7 @@ def generate(request):
     response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(filename)
     response['Content-Length'] = os.path.getsize(filename)
     return response
+
+
+def get_midi_events_json(request):
+    return JsonResponse(deploy.generate_midi_events())

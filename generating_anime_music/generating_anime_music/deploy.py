@@ -78,7 +78,7 @@ def generate_notes():
     prediction_output = []
 
     # generate 500 notes
-    for i in range(100):
+    for i in range(10):
         prediction_input = np.reshape(pattern, (1, len(pattern), 1))
         prediction_input = prediction_input / float(n_vocab)
 

@@ -17,6 +17,7 @@
     "midicube": "^0.6.1",
     "parcel-bundler": "^1.12.4",
     "soundfont-player": "^0.12.0",
+    "timidity": "^1.2.1",
     "xmlhttprequest": "^1.8.0"
   }
 }

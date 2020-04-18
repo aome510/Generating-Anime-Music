@@ -14,6 +14,8 @@ function loading() {
 }
 
 function loaded() {
+  document.getElementById('music-player-wrapper').classList.add('music-player');
+
   addGenerate();
   addPlayPause();
   addSeek();
@@ -24,6 +26,8 @@ function clear() {
   let play_pause = document.getElementById('play-pause');
   let generate = document.getElementById('generate');
   let seek = document.getElementById('seek');
+
+  document.getElementById('music-player-wrapper').classList.remove('music-player');
 
   playing = false;
 
@@ -36,26 +40,27 @@ function playPause() {
   play_pause = document.getElementById('play-pause');
   if (playing) {
     playing = false;
-    play_pause.innerHTML = 'Play';
+    play_pause.title = 'Play';
+    play_pause.className = 'play';
     player.pause();
   } else {
     ac.resume();
     playing = true;
-    play_pause.innerHTML = 'Pause';
+    play_pause.title = 'Pause';
+    play_pause.className = 'pause';
     player.play();
   }
 }
 
 function addPlayPause() {
-  let play_pause = document.createElement('div');
+  let play_pause = document.createElement('button');
   play_pause.id = 'play-pause';
-  play_pause.className = 'btn';
 
   play_pause.addEventListener('click', (e) => {
     playPause();
   });
 
-  document.getElementById('btn-wrapper').appendChild(play_pause);
+  document.getElementById('music-player-wrapper').appendChild(play_pause);
 }
 
 function addGenerate() {
@@ -63,6 +68,7 @@ function addGenerate() {
   generate.id = 'generate';
   generate.className = 'btn';
   generate.innerHTML = 'Generate';
+  generate.title = 'Generate an anime song!';
 
   generate.addEventListener('click', () => {
     clear();
@@ -71,7 +77,7 @@ function addGenerate() {
     player.load('/generated_song.mid').then(() => {
       loaded();
 
-      main_img.src = '/static/img/enjoy_2.jpg';
+      main_img.src = '/static/img/enjoy.jpg';
       main_img.alt = 'Please enjoy!';
 
       playPause();
@@ -85,15 +91,28 @@ function addSeek() {
   let seek = document.createElement('input');
   seek.type = 'range';
   seek.id = 'seek';
+  seek.className = 'slider';
   seek.value = 0;
 
-  seek.addEventListener('input', () => {
+  seek.addEventListener('input', (e) => {
+    e.preventDefault();
+
     if (!playing) playPause();
-    player.seek(seek.value / 100 * player.duration);
+    let time = 0.25 * Math.ceil(4 * seek.value / 100 * player.duration);
+    console.log(time);
+    player.seek(time);
+
+    return false;
+  });
+
+  seek.addEventListener('keydown', (e) => {
+    e.preventDefault();
+    return false;
   });
 
   player.on('timeupdate', (seconds) => {
     seek.value = seconds / player.duration * 100;
+    seek.style.backgroundSize = seek.value.toString() + '% 100%';
   });
 
   document.getElementById('music-player-wrapper').appendChild(seek);
@@ -101,7 +120,8 @@ function addSeek() {
 
 player.on('ended', () => {
   playing = false;
-  document.getElementById('play-pause').innerHTML = 'Play';
+  play_pause.title = 'Play';
+  play_pause.className = 'play';
 });
 
 player.on('error', (err) => {

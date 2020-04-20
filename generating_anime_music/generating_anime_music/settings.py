@@ -125,7 +125,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
     os.path.join(BASE_DIR, 'frontend'),
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'files'),
     os.path.join(BASE_DIR, 'frontend', 'node_modules', 'timidity'),
     os.path.join(BASE_DIR, 'frontend', 'node_modules', 'freepats'),
 )

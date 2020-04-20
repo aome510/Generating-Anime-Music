@@ -6,18 +6,13 @@
   "author": "Thang Pham <phamducthang1234@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "fmt": "prettier \"js/**/*\" \"*.json\"",
+    "fmt": "prettier \"js/**/*\" \"html/**/*\" \"css/**/*\" \"*.json\"",
     "dev": "parcel watch -d ../templates \"html/**/*.html\" --public-url /static/",
     "build": "mkdir -p ../templates && rm -rf ../templates/* && parcel build --no-source-maps -d ../templates \"html/**/*.html\" --public-url /static/"
   },
   "dependencies": {
-    "jzz": "^1.0.3",
-    "jzz-midi-smf": "^1.3.3",
-    "jzz-synth-tiny": "^1.1.5",
-    "midicube": "^0.6.1",
     "parcel-bundler": "^1.12.4",
-    "soundfont-player": "^0.12.0",
-    "timidity": "^1.2.1",
-    "xmlhttprequest": "^1.8.0"
+    "tailwindcss": "^1.2.0",
+    "timidity": "^1.2.1"
   }
 }

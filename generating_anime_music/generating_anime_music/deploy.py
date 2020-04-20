@@ -16,13 +16,13 @@ import numpy as np
 sess = tf.Session()
 graph = tf.get_default_graph()
 set_session(sess)
-model = load_model('static/model.hdf5')
+model = load_model('files/model.hdf5')
 model.summary()
 
 
 def generate_dataset():
     """datas preprocessing based on a list of song objects, each song object contains song's name and a sequence of notes"""
-    songs = pickle.load(open("static/songs.p", "rb"))
+    songs = pickle.load(open("files/songs.p", "rb"))
 
     # get a list of all notes in all songs
     notes = []

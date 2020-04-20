@@ -1,33 +1,45 @@
-let Timidity = require('timidity');
+let Timidity = require("timidity");
 
-const player = new Timidity('static');
+const player = new Timidity("static");
 
 let ac;
 let playing;
-let main_img = document.getElementById('main-img');
+let main_img = document.getElementById("main-img");
+
+const loading_classes =
+  "text-center rounded border-4 border-solid bg-white border-black text-3xl select-none my-1";
+const music_player_classes =
+  "music-player h-12 w-full rounded flex items-center my-1";
+const button_classes =
+  "bg-green-500 text-center text-xl text-white px-12 py-4 cursor-pointer select-none my-1";
+const seek_classes =
+  "slider w-11/12 ml-3 mr-5 rounded-lg h-3 transition-opacity outline-none appearance-none";
 
 function loading() {
-  let loading_message = document.createElement('div');
-  loading_message.id= 'loading';
-  loading_message.innerHTML = 'Generating';
-  document.getElementById('log-wrapper').appendChild(loading_message);
+  let loading_message = document.createElement("div");
+  loading_message.id = "loading";
+  loading_message.innerHTML = "Generating";
+
+  loading_message.className = loading_classes;
+
+  document.getElementById("log-wrapper").appendChild(loading_message);
 }
 
 function loaded() {
-  document.getElementById('music-player-wrapper').classList.add('music-player');
+  document.getElementById("music-player").className = music_player_classes;
 
   addGenerate();
   addPlayPause();
   addSeek();
-  document.getElementById('loading').remove();
+  document.getElementById("loading").remove();
 }
 
 function clear() {
-  let play_pause = document.getElementById('play-pause');
-  let generate = document.getElementById('generate');
-  let seek = document.getElementById('seek');
+  let play_pause = document.getElementById("play-pause");
+  let generate = document.getElementById("generate");
+  let seek = document.getElementById("seek");
 
-  document.getElementById('music-player-wrapper').classList.remove('music-player');
+  document.getElementById("music-player").className = "";
 
   playing = false;
 
@@ -37,109 +49,114 @@ function clear() {
 }
 
 function playPause() {
-  play_pause = document.getElementById('play-pause');
+  play_pause = document.getElementById("play-pause");
   if (playing) {
     playing = false;
-    play_pause.title = 'Play';
-    play_pause.className = 'play';
+    play_pause.title = "Play";
+    play_pause.className = "play";
     player.pause();
   } else {
     ac.resume();
     playing = true;
-    play_pause.title = 'Pause';
-    play_pause.className = 'pause';
+    play_pause.title = "Pause";
+    play_pause.className = "pause";
     player.play();
   }
 }
 
 function addPlayPause() {
-  let play_pause = document.createElement('button');
-  play_pause.id = 'play-pause';
+  let play_pause = document.createElement("button");
+  play_pause.id = "play-pause";
 
-  play_pause.addEventListener('click', (e) => {
+  play_pause.addEventListener("click", (e) => {
     playPause();
   });
 
-  document.getElementById('music-player-wrapper').appendChild(play_pause);
+  document.getElementById("music-player").appendChild(play_pause);
 }
 
 function addGenerate() {
-  let generate = document.createElement('div');
-  generate.id = 'generate';
-  generate.className = 'btn';
-  generate.innerHTML = 'Generate';
-  generate.title = 'Generate an anime song!';
+  let generate = document.createElement("div");
+  generate.id = "generate";
+  generate.innerHTML = "Generate";
+  generate.title = "Generate an anime song!";
 
-  generate.addEventListener('click', () => {
-    clear();
-    ac.resume();
+  generate.className = button_classes;
 
-    player.load('/generated_song.mid').then(() => {
-      loaded();
+  generate.addEventListener(
+    "click",
+    () => {
+      clear();
+      ac.resume();
 
-      main_img.src = '/static/img/enjoy.jpg';
-      main_img.alt = 'Please enjoy!';
+      player.load("/generated_song.mid").then(() => {
+        loaded();
 
-      playPause();
-    });
-  }, { once: true });  
+        main_img.src = "/static/img/enjoy.jpg";
+        main_img.alt = "Please enjoy!";
 
-  document.getElementById('btn-wrapper').appendChild(generate);
+        playPause();
+      });
+    },
+    { once: true }
+  );
+
+  document.getElementById("btn-wrapper").appendChild(generate);
 }
 
 function addSeek() {
-  let seek = document.createElement('input');
-  seek.type = 'range';
-  seek.id = 'seek';
-  seek.className = 'slider';
+  let seek = document.createElement("input");
+  seek.type = "range";
+  seek.id = "seek";
+  seek.className = seek_classes;
   seek.value = 0;
 
-  seek.addEventListener('input', (e) => {
+  seek.addEventListener("input", (e) => {
     e.preventDefault();
 
     if (!playing) playPause();
-    let time = 0.25 * Math.ceil(4 * seek.value / 100 * player.duration);
+    let time = 0.25 * Math.ceil(((4 * seek.value) / 100) * player.duration);
     console.log(time);
     player.seek(time);
 
     return false;
   });
 
-  seek.addEventListener('keydown', (e) => {
+  seek.addEventListener("keydown", (e) => {
     e.preventDefault();
     return false;
   });
 
-  player.on('timeupdate', (seconds) => {
-    seek.value = seconds / player.duration * 100;
-    seek.style.backgroundSize = seek.value.toString() + '% 100%';
+  player.on("timeupdate", (seconds) => {
+    seek.value = (seconds / player.duration) * 100;
+    seek.style.backgroundSize = seek.value.toString() + "% 100%";
   });
 
-  document.getElementById('music-player-wrapper').appendChild(seek);
+  document.getElementById("music-player").appendChild(seek);
 }
 
-player.on('ended', () => {
+player.on("ended", () => {
   playing = false;
-  play_pause.title = 'Play';
-  play_pause.className = 'play';
+  play_pause.title = "Play";
+  play_pause.className = "play";
 });
 
-player.on('error', (err) => {
+player.on("error", (err) => {
   console.log(err);
 });
 
-player.on('buffering', () => {
+player.on("buffering", () => {
   loading();
 
-  main_img.src = '/static/img/loading.gif';
-  main_img.alt = 'Generating';
+  main_img.src = "/static/img/loading.gif";
+  main_img.alt = "Generating";
 });
 
 window.onload = () => {
   ac = new AudioContext();
 
-  main_img.src = '/static/img/welcome.jpg';
-  main_img.alt = 'Welcome to Anime Music Generator';
+  main_img.src = "/static/img/welcome.jpg";
+  main_img.alt = "Welcome to Anime Music Generator";
 
   addGenerate();
-}
+};

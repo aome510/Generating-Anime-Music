@@ -1,23 +1,20 @@
+import tensorflow as tf
+import numpy as np
+import pickle
+from music21 import instrument, note, chord, stream
 from keras.models import load_model
 from keras.utils import to_categorical
 from keras.backend import set_session
 
-import tensorflow as tf
-
-from music21 import instrument, note, chord, stream
-
-import pickle
-
-import numpy as np
-
 # implementation based on https://towardsdatascience.com/how-to-generate-music-using-a-lstm-neural-network-in-keras-68786834d4c5
 
 # store graph session to prevent losing information
-sess = tf.Session()
-graph = tf.get_default_graph()
+
+sess = tf.compat.v1.Session()
+graph = tf.compat.v1.get_default_graph()
 set_session(sess)
-model = load_model('files/model.hdf5')
-model.summary()
+model = load_model('files/model.hdf5', compile=False)
+# model.summary()
 
 
 def generate_dataset():
@@ -46,7 +43,7 @@ def generate_dataset():
     network_output = []
     # create input sequences and the corresponding outputs
     for song in songs:
-        print("Loading", song["name"])
+        # print("Loading", song["name"])
         notes = song["notes"]
 
         for i in range(0, len(notes) - sequence_length, 1):

@@ -7,7 +7,7 @@ let playing;
 let main_img = document.getElementById("main-img");
 
 const loading_classes =
-  "text-center rounded border-4 border-solid bg-white border-black text-3xl select-none my-1";
+  "text-center rounded border-4 border-solid bg-white border-black text-3xl select-none my-1 py-1";
 const music_player_classes =
   "music-player h-12 w-full rounded flex items-center my-1";
 const button_classes =
@@ -21,6 +21,9 @@ function loading() {
   loading_message.innerHTML = "Generating";
 
   loading_message.className = loading_classes;
+
+  main_img.src = "/static/img/loading.gif";
+  main_img.alt = "Generating";
 
   document.getElementById("log-wrapper").appendChild(loading_message);
 }
@@ -43,7 +46,10 @@ function clear() {
 
   document.getElementById("music-player").className = "";
 
-  playing = false;
+  if (playing) {
+    playing = false;
+    player.pause();
+  }
 
   if (play_pause) play_pause.remove();
   if (generate) generate.remove();
@@ -89,7 +95,7 @@ function addGenerate() {
     "click",
     () => {
       clear();
-      ac.resume();
+      loading();
 
       fetch("midi_binary_data.json")
         .then(response => response.json())
@@ -149,13 +155,6 @@ player.on("ended", () => {
 
 player.on("error", (err) => {
   console.warn(err);
-});
-
-player.on("buffering", () => {
-  loading();
-
-  main_img.src = "/static/img/loading.gif";
-  main_img.alt = "Generating";
 });
 
 window.onload = () => {

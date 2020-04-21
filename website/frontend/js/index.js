@@ -26,6 +26,8 @@ function loading() {
 }
 
 function loaded() {
+  // console.log(player.duration);
+
   document.getElementById("music-player").className = music_player_classes;
 
   addGenerate();
@@ -89,14 +91,18 @@ function addGenerate() {
       clear();
       ac.resume();
 
-      player.load("/generated_song.mid").then(() => {
-        loaded();
+      fetch("midi_binary_data.json")
+        .then(response => response.json())
+        .then(data => {
+          player.load(new Uint8Array(data["data"])).then(() => {
+            loaded();
 
-        main_img.src = "/static/img/enjoy.jpg";
-        main_img.alt = "Please enjoy!";
+            main_img.src = "/static/img/enjoy.jpg";
+            main_img.alt = "Please enjoy!";
 
-        playPause();
-      });
+            playPause();
+          });
+        });
     },
     { once: true }
   );
@@ -114,10 +120,10 @@ function addSeek() {
   seek.addEventListener("input", (e) => {
     e.preventDefault();
 
-    if (!playing) playPause();
     let time = 0.25 * Math.ceil(((4 * seek.value) / 100) * player.duration);
-    console.log(time);
+    // console.log(time);
     player.seek(time);
+    if (!playing) playPause();
 
     return false;
   });
@@ -142,7 +148,7 @@ player.on("ended", () => {
 });
 
 player.on("error", (err) => {
-  console.log(err);
+  console.warn(err);
 });
 
 player.on("buffering", () => {

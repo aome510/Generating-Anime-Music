@@ -74,8 +74,8 @@ def generate_notes():
     pattern = network_input[start]
     prediction_output = []
 
-    # generate 500 notes
-    for i in range(500):
+    # generate 240 notes
+    for i in range(20):
         prediction_input = np.reshape(pattern, (1, len(pattern), 1))
         prediction_input = prediction_input / float(n_vocab)
 
@@ -97,7 +97,7 @@ def generate_notes():
     return prediction_output
 
 
-def create_midi(prediction_output, filename):
+def get_midi_binary_data(prediction_output):
     """ convert the output from the prediction to notes and create a midi file
         from the notes """
     offset = 0
@@ -126,7 +126,8 @@ def create_midi(prediction_output, filename):
         offset += 0.5
 
     midi_stream = stream.Stream(output_notes)
-    midi_stream.write('midi', fp='{}.mid'.format(filename))
+    with open(midi_stream.write('midi'), 'rb') as f:
+        return {'data': list(f.read())}
 
 
 def get_midi_events(prediction_output):
@@ -140,12 +141,12 @@ def get_midi_events(prediction_output):
             notes_in_chord = pattern.split('.')
             for current_note in notes_in_chord:
                 midi_events.append(
-                    {'note': note.Note(int(current_note)).pitch.midi, 'time': offset})
+                    {'note': note.Note(int(current_note)).pitch.midi, 'offset': offset})
         # pattern is a note
         else:
             midi_events.append(
-                {'note': note.Note(pattern).pitch.midi, 'time': offset})
-        # increase time offset
+                {'note': note.Note(pattern).pitch.midi, 'offset': offset})
+        # increase the note offset
         offset += 0.5
 
     # print(midi_events)
@@ -154,7 +155,7 @@ def get_midi_events(prediction_output):
 
 def generate_song():
     prediction_output = generate_notes()
-    create_midi(prediction_output, 'generated_song')
+    return get_midi_binary_data(prediction_output)
 
 
 def generate_midi_events():

@@ -7,3 +7,4 @@ website/frontend/node_modules/
 website/frontend/dist/
 website/frontend/.cache/
 website/templates/
+website/secret_key.txt

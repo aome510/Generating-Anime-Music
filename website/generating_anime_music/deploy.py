@@ -98,8 +98,7 @@ def generate_notes():
 
 
 def get_midi_binary_data(prediction_output):
-    """ convert the output from the prediction to notes and create a midi file
-        from the notes """
+    """ convert the output from the prediction to notes and return binary midi data"""
     offset = 0
     output_notes = []
 
@@ -131,6 +130,7 @@ def get_midi_binary_data(prediction_output):
 
 
 def get_midi_events(prediction_output):
+    """Return midi events as a python dictionary"""
     offset = 0
     midi_events = []
 
@@ -159,5 +159,6 @@ def generate_song():
 
 
 def generate_midi_events():
+    """ Generate and return midi events (note and offset)"""
     prediction_output = generate_notes()
     return get_midi_events(prediction_output)

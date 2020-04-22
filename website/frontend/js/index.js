@@ -22,7 +22,7 @@ function loading() {
 
   loading_message.className = loading_classes;
 
-  main_img.src = "/static/img/loading.gif";
+  main_img.src = "/static/loading.gif";
   main_img.alt = "Generating";
 
   document.getElementById("log-wrapper").appendChild(loading_message);
@@ -103,7 +103,7 @@ function addGenerate() {
           player.load(new Uint8Array(data["data"])).then(() => {
             loaded();
 
-            main_img.src = "/static/img/enjoy.jpg";
+            main_img.src = "/static/enjoy.jpg";
             main_img.alt = "Please enjoy!";
 
             playPause();
@@ -160,7 +160,14 @@ player.on("error", (err) => {
 window.onload = () => {
   ac = new AudioContext();
 
-  main_img.src = "/static/img/welcome.jpg";
+  web_favicon = document.createElement("link");
+  web_favicon.rel = "shortcut icon";
+  web_favicon.href = "static/favicon.ico"
+
+  document.getElementsByTagName("head")[0].appendChild(web_favicon);
+  document.getElementsByTagName("body")[0].style["background-image"] = "url(/static/background.jpg)";
+
+  main_img.src = "/static/welcome.jpg";
   main_img.alt = "Welcome to Anime Music Generator";
 
   addGenerate();

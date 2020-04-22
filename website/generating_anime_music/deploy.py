@@ -1,6 +1,7 @@
 import tensorflow as tf
 import numpy as np
 import pickle
+import time
 from music21 import instrument, note, chord, stream
 from keras.models import load_model
 from keras.utils import to_categorical
@@ -68,6 +69,7 @@ def generate_dataset():
 def generate_notes():
     """ Generate notes from the neural network based on a sequence of notes """
 
+    start_time = time.time()
     # pick a random sequence from the input as a starting point for the prediction
     start = np.random.randint(0, len(network_input) - 1)
 
@@ -75,7 +77,7 @@ def generate_notes():
     prediction_output = []
 
     # generate 240 notes
-    for i in range(20):
+    for i in range(240):
         prediction_input = np.reshape(pattern, (1, len(pattern), 1))
         prediction_input = prediction_input / float(n_vocab)
 
@@ -93,6 +95,10 @@ def generate_notes():
 
         pattern = np.append(pattern, index)
         pattern = pattern[1: len(pattern)]
+
+    stop_time = time.time()
+
+    print('Prediction took: ', stop_time - start_time)
 
     return prediction_output
 

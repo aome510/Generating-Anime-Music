@@ -1,6 +1,6 @@
 let Timidity = require("timidity");
 
-const player = new Timidity("static");
+let player;
 
 let ac;
 let playing;
@@ -147,18 +147,19 @@ function addSeek() {
   document.getElementById("music-player").appendChild(seek);
 }
 
-player.on("ended", () => {
-  playing = false;
-  play_pause.title = "Play";
-  play_pause.className = "play";
-});
-
-player.on("error", (err) => {
-  console.warn(err);
-});
-
 window.onload = () => {
   ac = new AudioContext();
+  player = new Timidity('static');
+
+  player.on("ended", () => {
+    playing = false;
+    play_pause.title = "Play";
+    play_pause.className = "play";
+  });
+
+  player.on("error", (err) => {
+    console.warn(err);
+  });
 
   web_favicon = document.createElement("link");
   web_favicon.rel = "shortcut icon";

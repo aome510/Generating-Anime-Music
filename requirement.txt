@@ -1,0 +1,8 @@
+dj-database-url==0.5.0
+Django==3.0.5
+gunicorn
+psycopg2-binary
+Keras==2.3.1
+music21==5.7.2
+tensorflow-cpu==1.15.0
+whitenoise==5.0.1

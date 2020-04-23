@@ -10,10 +10,8 @@
     "dev": "parcel watch -d ../templates \"html/**/*.html\" --public-url /static/",
     "build": "mkdir -p ../templates && rm -rf ../templates/* && parcel build --no-source-maps -d ../templates \"html/**/*.html\" --public-url /static/"
   },
-  "dependencies": {
-    "timidity": "^1.2.1"
-  },
   "devDependencies": {
+    "timidity": "^1.2.1",
     "tailwindcss": "^1.2.0",
     "parcel-bundler": "^1.12.4",
     "parcel-plugin-purgecss": "^2.1.3"

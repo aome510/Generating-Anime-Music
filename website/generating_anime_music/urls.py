@@ -1,9 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from . import views, deploy
-
-deploy.init()
+from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),

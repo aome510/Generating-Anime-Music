@@ -3,6 +3,8 @@ from django.http import JsonResponse
 
 from . import deploy
 
+deploy.init()
+
 
 def index(request):
     return render(request, 'index.html')

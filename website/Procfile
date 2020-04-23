@@ -1,1 +1,1 @@
-web: gunicorn generating_anime_music.wsgi --timeout 60 --log-file -
+web: gunicorn generating_anime_music.wsgi --log-file -

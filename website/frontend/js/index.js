@@ -6,7 +6,7 @@ let ac;
 let playing;
 let main_img = document.getElementById("main-img");
 
-const loading_classes =
+const log_classes =
   "text-center rounded border-4 border-solid bg-white border-black text-3xl select-none my-1 py-1";
 const music_player_classes =
   "music-player h-12 w-full rounded flex items-center my-1";
@@ -16,11 +16,14 @@ const seek_classes =
   "slider w-11/12 ml-3 mr-5 rounded-lg h-3 transition-opacity outline-none appearance-none";
 
 function loading() {
+  let log = document.getElementById('log-message');
+  if (log) log.remove();
+
   let loading_message = document.createElement("div");
   loading_message.id = "loading";
   loading_message.innerHTML = "Generating";
 
-  loading_message.className = loading_classes;
+  loading_message.className = log_classes;
 
   main_img.src = "/static/loading.gif";
   main_img.alt = "Generating";
@@ -83,6 +86,36 @@ function addPlayPause() {
   document.getElementById("music-player").appendChild(play_pause);
 }
 
+function timeoutPromise(ms, promise) {
+  return new Promise((resolve, reject) => {
+    const timeoutId = setTimeout(() => {
+      reject(new Error("promise timeout"))
+    }, ms);
+    promise.then(
+      (res) => {
+        clearTimeout(timeoutId);
+        resolve(res);
+      },
+      (err) => {
+        clearTimeout(timeoutId);
+        reject(err);
+      }
+    );
+  })
+}
+
+function addLog(message) {
+  let log = document.createElement('div');
+  log.innerHTML = message;
+  log.className = log_classes;
+  log.id = 'log-message';
+
+  main_img.src = "/static/confused.jpg";
+  main_img.alt = "Something went wrong";
+
+  document.getElementById('log-wrapper').appendChild(log);
+}
+
 function addGenerate() {
   let generate = document.createElement("div");
   generate.id = "generate";
@@ -97,7 +130,7 @@ function addGenerate() {
       clear();
       loading();
 
-      fetch("midi_binary_data.json")
+      timeoutPromise(30000, fetch("midi_binary_data.json"))
         .then(response => response.json())
         .then(data => {
           player.load(new Uint8Array(data["data"])).then(() => {
@@ -108,7 +141,12 @@ function addGenerate() {
 
             playPause();
           });
-        });
+        }).catch((err) => {
+          document.getElementById('loading').remove();
+
+          addLog('Request time out!<br>Please try to generate again.');
+          addGenerate();
+        })
     },
     { once: true }
   );

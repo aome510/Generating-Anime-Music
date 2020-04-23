@@ -3,10 +3,8 @@ models/*
 *.pyc
 
 website/db.sqlite3
-website/secret_key.txt
-website/generated_song.mid
-website/files/model.hdf5
 website/frontend/node_modules/
+website/secret_key.txt
 website/frontend/dist/
 website/frontend/.cache/
-website/templates/
+website/staticfiles/

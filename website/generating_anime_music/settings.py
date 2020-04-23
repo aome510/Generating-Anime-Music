@@ -33,7 +33,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG')
 if DEBUG is None:
     DEBUG = False
 
-ALLOWED_HOSTS = ['anime-music-generator.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['anime-music-generator.herokuapp.com', '127.0.0.1', 'localhost']
 
 # Application definition
 

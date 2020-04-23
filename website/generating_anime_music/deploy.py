@@ -11,11 +11,17 @@ from keras.backend import set_session
 
 # store graph session to prevent losing information
 
-sess = tf.compat.v1.Session()
-graph = tf.compat.v1.get_default_graph()
-set_session(sess)
-model = load_model('files/model.hdf5', compile=False)
-# model.summary()
+
+def init():
+    global sess
+    global graph
+    global model
+
+    sess = tf.compat.v1.Session()
+    graph = tf.compat.v1.get_default_graph()
+    set_session(sess)
+    model = load_model('files/model.hdf5', compile=False)
+    # model.summary()
 
 
 def generate_dataset():

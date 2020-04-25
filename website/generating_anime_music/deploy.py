@@ -82,8 +82,8 @@ def generate_notes():
     pattern = network_input[start]
     prediction_output = []
 
-    # generate 240 notes
-    for i in range(240):
+    # generate 200 notes
+    for i in range(200):
         prediction_input = np.reshape(pattern, (1, len(pattern), 1))
         prediction_input = prediction_input / float(n_vocab)
 

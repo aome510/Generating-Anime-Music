@@ -1,5 +1,5 @@
 dj-database-url==0.5.0
-Django==3.0.7
+Django==3.1.6
 gunicorn
 psycopg2-binary
 Keras==2.3.1
